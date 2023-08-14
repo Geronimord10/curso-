@@ -5,18 +5,17 @@ import edensalas from "../../page/edensalas";
 const edenpage = new Edenpage();
 const edenHeader = new EdenHeader();
 const EdenSalas = new EdenSalas
-
+const utils = require("../../page/utils")
 
 
 describe('test sobre la pagina eden entradas', () => {
-    beforeEach(() =>{
-        cy.visit("https://www.edenentradas.com.ar/");
+    beforeEach(() => {
+        cy.visit("/");
     });
     afterEach(() => {
         // func para desloguearse
     })
     it("verificar subtitulos", () => {
-        cy.visit("https://www.edenentradas.com.ar/");
         // constantes nuevas
         const txtBuscar = "BUSCAR EVENTO";
         const txtcalendar = "CALENDARIO DE EVENTO"
@@ -24,10 +23,9 @@ describe('test sobre la pagina eden entradas', () => {
         edenpage.getsubTitles().first().should("contain.text", txtBuscar)
         edenpage.getsubTitles().last().should("contain.text", txtcalendar)
     });
-  
+
     it('Verificar menu', () => {
-        cy.visit("https://www.edenentradas.com.ar/");
-        const menuBTN = ["HOME", "TODOS", "AGENDA DEL FINDE", "RECITALES","TEATROS", "CUARTETOS", "FESTIVALES", "SALAS"]
+        const menuBTN = ["HOME", "TODOS", "AGENDA DEL FINDE", "RECITALES", "TEATROS", "CUARTETOS", "FESTIVALES", "SALAS"]
 
         edenHeader.getMenuButtons().each((button, $index) => {
             cy.wrap(button).should("be.visible", menuBTN[$index])
@@ -35,13 +33,11 @@ describe('test sobre la pagina eden entradas', () => {
     });
 
     it("verificar pagina de recitales", () => {
-        cy.visit("https://www.edenentradas.com.ar/");
         edenHeader.getMenuButtons().contains("RECITALES").click();
     })
-    
+
     it('jira-2012:Verificar SALAS', () => {
         //cy.visit("https://www.edenentradas.com.ar/sitio/contenido/salas");
-        cy.visit("https://www.edenentradas.com.ar/")
         edenHeader.getMenuButtons().contains("SALAS").click();
         const titulosSalas = [
             "Plaza de la Música",
@@ -51,7 +47,7 @@ describe('test sobre la pagina eden entradas', () => {
             "Teatro Cultural Cañada",
             "Sala Agustín Tosco - Luz y Fuerza - B° Centro",
             "Sala de las Américas",
-            "Studio Theater", 
+            "Studio Theater",
             "Casa Babylon",
         ]
         // validacion de los titulos iterando por elemento
@@ -60,20 +56,63 @@ describe('test sobre la pagina eden entradas', () => {
             cy.wrap(block).should("be.visible")
             edensalas.getSalasTitle().eq($inx).should("have.text", titulosSalas[$inx])
         });
-        
+
         // validacion por array
         titulosSalas.forEach((titulo, $inx) => {
             edensalas.getsalasblock().eq($inx).should("contain.text", titulo)
             edensalas.getsalasblock().eq($inx).should("have.text", titulo)
-        })  
+        })
 
         edenHeader.getMenuButtons().each((button, $index) => {
             cy.wrap(button).should("be.visible", menuBTN[$index])
         })
+    });
 
-        it("Validacion del calendario", () => {
-            cy.visit("https://www.edenentradas.com.ar/");
-            edenHeader.getCalendarTitle().should("contain.text", "Agosto")
+    it("Calendario", () => {
+        const nombresMeses = [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+        ];
+        const fechaActual = new Date();
+        const mesActual = fechaActual.getMonth();
+        const anioActual = fechaActual.getFullYear();
+        const nombreMesActual = nombresMeses[mesActual];
+        const diaActual = fechaActual.getDate();
+
+        cy.log(nombreMesActual); // Por ejemplo, "Agosto"
+        cy.log(anioActual); // Por ejemplo, "2023"
+        cy.log(diaActual); // Por ejemplo, "4"
+        edenHome.getCalendarTitle().should("contain.text", nombreMesActual);
+        edenHome.getCalendarTitle().should("contain.text", anioActual);
+
+        edenHome
+            .getCalendar()
+            .find("td")
+            .each((cuadradoDia, $inx) => {
+                if ($inx < diaActual) {
+                    cy.wrap(cuadradoDia).should(
+                        "have.class",
+                        "ui-datepicker-unselectable ui-state-disabled"
+                    );
+                    cy.log(`El día ${$inx} es no seleccionable`);
+                }
+            });
+        it("Validacion del calendario 2", () => {
+            const [dia, mes, anio] = utils.getCompleteDate();
+
+            edenpage.getCalendarTitle().should("contain.text", mes)
+            edenpage.getCalendarTitle().should("contain.text", anio)
+
         });
     });
 })

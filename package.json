@@ -4,7 +4,8 @@
   "description": "cypress - tests automatizados para el PIL",
   "main": "index.js",
   "scripts": {
-    "test": "tests"
+    "test": "open",
+    "cypress:run:all": "npx cypress run --e2e --browser chorme --spec cypress/e2e/1-eden"
   },
   "keywords": [
     "cypress",
@@ -15,6 +16,7 @@
   "author": "Geronimo",
   "license": "ISC",
   "dependencies": {
+    "ajv": "^8.12.0",
     "cypress": "^12.17.2"
   }
 }
