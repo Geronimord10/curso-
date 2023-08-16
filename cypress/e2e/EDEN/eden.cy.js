@@ -2,6 +2,8 @@
 import Edenpage from "../../page/edenpage"
 import EdenHeader from "../../page/edenHeader";
 import edensalas from "../../page/edensalas";
+import EdenEvent from "../../page/edenEvent";
+const edenEvent = new EdenEvent();
 const edenpage = new Edenpage();
 const edenHeader = new EdenHeader();
 const EdenSalas = new EdenSalas
@@ -10,10 +12,8 @@ const utils = require("../../page/utils")
 
 describe('test sobre la pagina eden entradas', () => {
     beforeEach(() => {
-        cy.visit("/");
-    });
-    afterEach(() => {
-        // func para desloguearse
+        cy.openweb("/")
+
     })
     it("verificar subtitulos", () => {
         // constantes nuevas

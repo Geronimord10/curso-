@@ -1,9 +1,9 @@
 class EdenHeader2 {
-    getMenuButtons(){
-        return cy.get("#navbar a")
+    getMenuButtons() {
+        return cy.get("#navbar a");
     }
 
-    getImagLogo() {
+    getImgLogo() {
         return cy.get("#header-logo");
     }
 }
