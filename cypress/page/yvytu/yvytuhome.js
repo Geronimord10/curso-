@@ -14,6 +14,11 @@ class YvytuHome {
     getGenericSubtitle() {
         return cy.get("h2")
     }
+
+    getGnericButton() {
+        return cy.get("a")
+    }
 }
+
 
 export default new YvytuHome();

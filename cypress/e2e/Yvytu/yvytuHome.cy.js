@@ -30,7 +30,7 @@ describe("tests sobre la pagina de yvytu", () => {
                 cy.wrap(boton).should("have.text", menu[indice])
             }
         })
-    })
+    });
 
     it("verificar comportamiento del boton IR Arriba", () => {
         yvytuhome.getIrArribaButton().should("not.be.visible");
@@ -43,4 +43,13 @@ describe("tests sobre la pagina de yvytu", () => {
             cy.wrap(boton).should("be.visible");
         });
     });
-})
+
+    it("verificar boton de reservar", () => {
+        yvytuhome.getGenericButton().contains("Reservar").should("have.attr", "href", "https://wa.me/5493757454400");
+        yvytuhome.getGenericButton().contains("Reservar").should("have.attr", "target", "_blank");
+
+        yvytuhome.getGenericButton().contains("Reservar").should("have.css",
+            "Background",
+            "rgb(34, 153, 84) none repeat scroll 0% 0% / auto padding-box border-box")
+    });
+});
