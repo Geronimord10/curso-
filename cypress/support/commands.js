@@ -23,3 +23,48 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+const Ajv = require("ajv");
+const ajv = new Ajv();
+
+Cypress.Commands.add("openWeb", () => {
+    let viewDevice;
+    if (Cypress.env("type") != "mobile") {
+        viewDevice = Cypress.env("viewportdesktop").device;
+    } else {
+        viewDevice = Cypress.env("viewportmobile").device;
+    }
+    cy.log(`**${JSON.stringify(viewDevice)}**`);
+    cy.viewport(viewDevice);
+    cy.openweb("/");
+
+});
+
+Cypress.Commands.add("validarScheme", (schemaJson, servicioJson) => {
+    cy.fixture(`schemas/${schemaJson}.json`).then((schema) => {
+        //cy.log(JSON.stringify(schema));
+        const validate = ajv.compile(schema);
+
+        cy.fixture(`${servicioJson}.json`).then((servJson) => {
+            //cy.log(JSON.stringify(servJson));
+            const data = servJson;
+
+            const valid = validate(data);
+            if (!valid) {
+                cy.log(validate.errors);
+            } else {
+                cy.log(`La respuesta del servicio posee los tipos de datos correctos`);
+            }
+        });
+    });
+});
+
+Cypress.Commands.add("serviceCall", (metodo, urly, fileName, schemaName) => {
+    cy.request({
+        method: metodo,
+        url: urly,
+    }).then((response) => {
+        cy.writeFile(`cypress/fixtures/${fileName}.json`, response.body);
+        expect(response.status).to.eq(200);
+        cy.validarScheme(schemaName, fileName);
+    });
+});

@@ -15,7 +15,7 @@ class YvytuHome {
         return cy.get("h2")
     }
 
-    getGnericButton() {
+    getGenericButton() {
         return cy.get("a")
     }
 }

@@ -7,7 +7,7 @@ describe("tests sobre la pagina de yvytu", () => {
     })
     it("verificar barra de navegacion - iterar en los botones pildora", () => {
 
-        const menu = ["LA RESERVA", " CABAÑAS", "COMO LLEGAR", "CONTACTO", "DONÁ"];
+        const menu = ["LA RESERVA", "CABAÑAS", "COMO LLEGAR", "CONTACTO", "DONÁ"];
 
         yvytuhome.getMenuPillButton().each((boton, indice) => {
             cy.wrap(boton).should("have.text", menu[indice]).and("be.visible");
@@ -15,7 +15,6 @@ describe("tests sobre la pagina de yvytu", () => {
     });
 
     it("verificar barra de navegacion - iterar en botones", () => {
-
         const menu = [
             "",
             "LA RESERVA",

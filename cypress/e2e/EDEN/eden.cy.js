@@ -7,7 +7,7 @@ const edenEvent = new EdenEvent();
 const edenpage = new Edenpage();
 const edenHeader = new EdenHeader();
 const EdenSalas = new EdenSalas
-const utils = require("../../page/utils")
+//const utils = require("../../page/utils")
 
 
 describe('test sobre la pagina eden entradas', () => {
@@ -92,10 +92,10 @@ describe('test sobre la pagina eden entradas', () => {
         cy.log(nombreMesActual); // Por ejemplo, "Agosto"
         cy.log(anioActual); // Por ejemplo, "2023"
         cy.log(diaActual); // Por ejemplo, "4"
-        edenHome.getCalendarTitle().should("contain.text", nombreMesActual);
-        edenHome.getCalendarTitle().should("contain.text", anioActual);
+        edenpage.getCalendarTitle().should("contain.text", nombreMesActual);
+        edenpage.getCalendarTitle().should("contain.text", anioActual);
 
-        edenHome
+        edenpage
             .getCalendar()
             .find("td")
             .each((cuadradoDia, $inx) => {
@@ -114,5 +114,11 @@ describe('test sobre la pagina eden entradas', () => {
             edenpage.getCalendarTitle().should("contain.text", anio)
 
         });
+
+        it.only("verificar pagina de FESTIVALES", () => {
+            edenHeader.getMenuButtons().contains("FESTIVALES").click();
+            edenpage.getCalendar().should("be.visible")
+
+        })
     });
 })

@@ -8,8 +8,8 @@ describe('test sobre la pagina eden entradas', () => {
 
         const txtBuscar = "BUSCAR EVENTO";
         const txtCalendar = " CALENDARIO DE EVENTOS";
-        edenHome2.getsubTitles().first().should("contain.text", txtBuscar)
-        edenHome2.getsubTitles().last().should("contain.text", txtCalendar)
+        edenpage2.getsubTitles().first().should("contain.text", txtBuscar)
+        edenpage2.getsubTitles().last().should("contain.text", txtCalendar)
     });
 
     it('Verificar menu', () => {
